@@ -1,13 +1,17 @@
 matrix:
-  ARCH:
-    - amd64
-    - arm
+  include:
+    - ARCH: amd64
+      STAGE: build
+    - ARCH: arm
+      STAGE: build
+    - ARCH: amd64
+      STAGE: deploy
 
 platform: linux/${ARCH}
 
 pipeline:
   publish:
-    image: plugins/docker:latest
+    image: justinbarrick/docker:latest
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
     repo: justinbarrick/drone-manifest
     tags:
@@ -16,9 +20,11 @@ pipeline:
     - ${ARCH}
     when:
       branch: master
+      matrix:
+        STAGE: build
 
   manifest:
-    image: justinbarrick/drone-manifest:${ARCH}-latest
+    image: justinbarrick/drone-manifest
     repo: justinbarrick/drone-manifest
     tag: latest
     images:
@@ -30,3 +36,7 @@ pipeline:
         tag: amd64
         annotations:
           arch: amd64
+    when:
+      branch: master
+      matrix:
+        STAGE: deploy
