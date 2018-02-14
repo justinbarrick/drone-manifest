@@ -1,7 +1,8 @@
 #!/bin/sh
 sh /usr/local/bin/dind dockerd --host=unix:///var/run/docker.sock --log-level fatal &
 
-env
+# wait for docker
+sleep 2
 
 echo "$DOCKER_PASSWORD" |docker login -u "$DOCKER_USERNAME" --password-stdin
 
