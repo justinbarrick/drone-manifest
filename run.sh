@@ -1,6 +1,8 @@
 #!/bin/sh
 echo "$DOCKER_PASSWORD" |docker login -u "$DOCKER_USERNAME" --password-stdin
 
+env
+
 docker manifest create "$PLUGIN_REPO":"$PLUGIN_TAG" $(echo "$PLUGIN_IMAGES" |jq -r 'map(.repo + ":" + .tag)[]')
 
 for image in $(echo "$PLUGIN_IMAGES" |jq -rMc '.[]'); do
