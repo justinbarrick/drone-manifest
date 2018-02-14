@@ -7,7 +7,7 @@ platform: linux/${ARCH}
 
 pipeline:
   publish:
-    image: plugins/docker:linux-${ARCH}
+    image: plugins/docker:latest
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
     repo: justinbarrick/drone-manifest
     tags:
@@ -30,5 +30,3 @@ pipeline:
         tag: amd64
         annotations:
           arch: amd64
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
