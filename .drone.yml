@@ -1,0 +1,34 @@
+matrix:
+  ARCH:
+    - amd64
+    - arm
+
+platform: linux/${ARCH}
+
+pipeline:
+  publish:
+    image: plugins/docker
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
+    repo: justinbarrick/drone-manifest
+    tags:
+    - ${ARCH}-latest
+    - ${ARCH}-${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
+    - ${ARCH}
+    when:
+      branch: master
+
+#  manifest:
+#    image: manifest-test
+#    repo: justinbarrick/drone-helm
+#    tag: latest
+#    images:
+#      - repo: justinbarrick/drone-helm
+#        tag: arm
+#        annotations:
+#          arch: arm
+#      - repo: justinbarrick/drone-helm
+#        tag: amd64
+#        annotations:
+#          arch: amd64
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
