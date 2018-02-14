@@ -18,6 +18,7 @@ pipeline:
     - ${ARCH}-latest
     - ${ARCH}-${DRONE_BRANCH}-${DRONE_COMMIT_SHA:0:7}
     - ${ARCH}
+    privileged: true
     when:
       branch: master
       matrix:
@@ -25,6 +26,7 @@ pipeline:
 
   manifest:
     image: justinbarrick/drone-manifest
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
     repo: justinbarrick/drone-manifest
     tag: latest
     images:
@@ -36,6 +38,7 @@ pipeline:
         tag: amd64
         annotations:
           arch: amd64
+    privileged: true
     when:
       branch: master
       matrix:
