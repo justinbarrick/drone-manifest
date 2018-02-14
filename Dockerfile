@@ -5,4 +5,4 @@ RUN apk update && apk add jq
 COPY config.json /root/.docker/config.json
 COPY run.sh /run.sh
 
-ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "/run.sh"]
+CMD ["/run.sh"]

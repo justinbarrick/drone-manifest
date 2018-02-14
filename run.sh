@@ -1,7 +1,9 @@
 #!/bin/sh
-echo "$DOCKER_PASSWORD" |docker login -u "$DOCKER_USERNAME" --password-stdin
+sh /usr/local/bin/dind dockerd --host=unix:///var/run/docker.sock --log-level fatal &
 
 env
+
+echo "$DOCKER_PASSWORD" |docker login -u "$DOCKER_USERNAME" --password-stdin
 
 docker manifest create "$PLUGIN_REPO":"$PLUGIN_TAG" $(echo "$PLUGIN_IMAGES" |jq -r 'map(.repo + ":" + .tag)[]')
 
@@ -10,3 +12,5 @@ for image in $(echo "$PLUGIN_IMAGES" |jq -rMc '.[]'); do
 done
 
 docker manifest push "$PLUGIN_REPO":"$PLUGIN_TAG"
+
+kill -TERM $(cat /var/run/docker.pid)
