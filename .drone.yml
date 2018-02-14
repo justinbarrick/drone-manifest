@@ -7,7 +7,7 @@ platform: linux/${ARCH}
 
 pipeline:
   publish:
-    image: plugins/docker
+    image: plugins/docker:linux-${ARCH}
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
     repo: justinbarrick/drone-manifest
     tags:
@@ -17,18 +17,18 @@ pipeline:
     when:
       branch: master
 
-#  manifest:
-#    image: manifest-test
-#    repo: justinbarrick/drone-helm
-#    tag: latest
-#    images:
-#      - repo: justinbarrick/drone-helm
-#        tag: arm
-#        annotations:
-#          arch: arm
-#      - repo: justinbarrick/drone-helm
-#        tag: amd64
-#        annotations:
-#          arch: amd64
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock
+  manifest:
+    image: justinbarrick/drone-manifest:${ARCH}-latest
+    repo: justinbarrick/drone-manifest
+    tag: latest
+    images:
+      - repo: justinbarrick/drone-helm
+        tag: arm
+        annotations:
+          arch: arm
+      - repo: justinbarrick/drone-helm
+        tag: amd64
+        annotations:
+          arch: amd64
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
