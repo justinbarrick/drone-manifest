@@ -25,16 +25,16 @@ pipeline:
         STAGE: build
 
   manifest:
-    image: justinbarrick/drone-manifest:latest
+    image: justinbarrick/drone-manifest:test
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD ]
     repo: justinbarrick/drone-manifest
     tag: latest
     images:
-      - repo: justinbarrick/drone-helm
+      - repo: justinbarrick/drone-manifest
         tag: arm
         annotations:
           arch: arm
-      - repo: justinbarrick/drone-helm
+      - repo: justinbarrick/drone-manifest
         tag: amd64
         annotations:
           arch: amd64
